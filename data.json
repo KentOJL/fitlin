@@ -1,0 +1,35 @@
+{
+    "items": [
+      {
+        "id": 1,
+        "name": "Razer Deathadder V2 Pro",
+        "price": 349.00,
+        "quantity": 100
+      },
+      {
+        "id": 2,
+        "name": "Razer Viper Ultimate",
+        "price": 419.00,
+        "quantity": 105
+      },
+      {
+        "id": 3,
+        "name": "Razer Basilink Ultimate",
+        "price": 599.00,
+        "quantity": 35
+      },
+      {
+        "id": 4,
+        "name": "Razer Viper Mini",
+        "price": 139.00,
+        "quantity": 295
+      },
+      {
+        "id": 5,
+        "name": "Raazer Deathadder X",
+        "price": 76.90,
+        "quantity": 592
+      }
+    ]
+}
+  
