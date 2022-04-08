@@ -1,0 +1,5 @@
+1 , Razer Deathadder V2, 349.00 , 100
+2 , Razer Viper Ultimate, 419.00 , 105
+3 , Razer Basilink Ulti, 599.00 , 35
+4 , Razer Viper Mini, 139.00 , 295
+5 , Raazer Deathadder X, 76.90 , 592
