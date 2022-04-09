@@ -4,8 +4,8 @@ import sys
 
 
 
-
 all_products = [line.strip().split(',') for line in open('razershop.txt','r').readlines()]
+
 
 
 def banner():
@@ -22,15 +22,34 @@ def banner():
 
 
 def display_all():
-    print("SNO\t Product \t\t\t\t In Stock\t\t\tPrice")
+    print("SNO\t Product \t\t\t\t  Price\t\t\tIn Stock")
     for item in all_products:
-        print("\n{0}\t{1} \t\t\t {2}\t\t\t{3}".format(item[0], item[1], item[2], item[3]))
+        print("\n{0}\t{1} \t\t\t {2}\t\t{3}".format(item[0], item[1], item[2], item[3]))
 
 
 
 def order_summary(product, price , total , q_lst):
     print("-" * 80)
-    print("\t\tRazer Mouse Shop")
+    title = "Razer Mouse Shop"
+    x = title.center(80)
+    print(x)
+    print("-" * 80)
+    print("Order Summary\t\t\t\t\tDate:{}".format(str(datetime.now())))
+    print(" ")
+    print("Product name\t\t\tQuantity\tPrice")
+    print("-" * 80)
+    for j in range(len(product)):
+        print("{}\t\t  {}\t\tRM {:.2f}".format(product[j] , q_lst[j] ,price[j] ))
+    print("-" * 80)
+    print("Total Payment Amount:\t\t\t\tRM {:.2f}".format(total))
+
+
+
+def member_summary(product, price , total , q_lst):
+    print("-" * 80)
+    title = "Razer Mouse Shop"
+    x = title.center(80)
+    print(x)
     print("-" * 80)
     print("Order Summary\t\tDate:{}".format(str(datetime.now())))
     print(" ")
@@ -45,7 +64,9 @@ def order_summary(product, price , total , q_lst):
 
 def generate_bill(product, total, lst , price , q_lst , Change , amt_received):
     print("-" * 80)
-    print("\n\tRazer Mouse Shop")
+    title = "Razer Mouse Shop"
+    x = title.center(80)
+    print(x)
     print("-" * 80)
     print("Bill:{} \t\tDate:{}".format(int(random.random()*100000), str(datetime.now())))
     print(" ")
@@ -134,42 +155,59 @@ while(True):
 
         order_summary(item_lst , price_lst , total_price , quantity_lst)
         print(" ")
-        conf = input("Please confirm your order(Y/N): ")
+        conf = input("Please confirm your order(Y/N): ").upper()
         if conf == "Y":
-            member = input("Do you have membership(Y/N): ")
+            member = input("Do you have membership(Y/N): ").upper()
             if member == "Y":
                 total_price = total_price * 0.9
+                member_summary(item_lst , price_lst , total_price , quantity_lst)
                 payment = float(input("Amount received: "))
+                change = payment - total_price
+                generate_bill(item, total_price, item_lst , price_lst , quantity_lst ,change , payment)
+                print(" ")
+                print("Thanks For shopping with Us :)")
+                sys.exit(0)
+            elif conf == "N":
+                payment = float(input("Amount received: RM"))
                 change = payment - total_price
                 generate_bill(item, total_price, item_lst , price_lst , quantity_lst ,change , payment)
                 print(" ")
                 print("Thanks For shopping with Us :)")
                 sys.exit(0)
             else:
-                payment = float(input("Amount received: "))
-                change = payment - total_price
-                generate_bill(item, total_price, item_lst , price_lst , quantity_lst ,change , payment)
-                print(" ")
-                print("Thanks For shopping with Us :)")
-                sys.exit(0)
-        else:
+                print("Invalid Typing Error")
+
+        elif conf == "N":
             print("Continue Exploring the shop")
+        else:
+            print("Invalid Typing Error")
     
     elif choice == 3:
         username = input("Enter Admin UserID: ")
         password = input("Enter the Password: ")
         if username == "Admin" and password == "password":
+            print(" ")
+            print("ADD INVENTORY ITEM")
+            print("---------------------")
+            print()
             prod = []
             prod.append(len(all_products)+1)
             prod.append(input("Enter the Product Name: "))
-            pri = float(input("Price: "))
+            pri = "{:.2f}".format(float(input("Price: ")))
             quant = int(input("Quantity: "))
             prod.append(str(pri))
             prod.append(str(quant))
             all_products.append(prod)
-            for i in prod:
+            while True:
+                confirmation = input("CONFIRMATION: Are You Sure You Want To Add This Item(yes/no): ").lower()
+                if confirmation in ['yes', 'no']:
+                    break    
+            if confirmation == 'yes':
                 with open("razershop.txt" , 'a') as newline:
-                    newline.write("{0} , {1}, {2} , {3}\n".format(prod[0] , prod[1] , prod[2] , prod[3]))
+                    newline.write("\n{0} , {1}, {2} , {3}".format(prod[0] , prod[1] , prod[2] , prod[3]))
+                print("Item Had Been Added")   
+            else:
+                sys.exit(0)
         else:
             print("Incorrect username and password")
 
@@ -177,13 +215,43 @@ while(True):
         username = input("Enter Admin UserID: ")
         password = input("Enter the Password: ")
         if username == "Admin" and password == "password":
-            del_prod = int(input("Enter the product id which you want to delete: "))
-            del(all_products[del_prod - 1])
-            
-            with open("razershop.txt" , 'w') as newline:
-                 newline.write(all_products)
+            print(" ")
+            print("DELETE INVENTORY ITEM")
+            print("---------------------")
+            print()
+            while True:
+                del_prod = int(input("Enter the product id which you want to delete: "))
+                if del_prod <= len(all_products):
+                    break
+                else:
+                    print("That Item Does Not Exist")
+                    print()
+
+            while True:
+                confirmation = input("CONFIRMATION: Are You Sure You Want To Delete This Item(yes/no): ").lower()
+                if confirmation in ['yes', 'no']:
+                    break    
+            if confirmation == 'yes':
+                del(all_products[del_prod - 1])
+                for j in all_products:
+                    if int(j[0]) > del_prod:
+                        j[0] = int(j[0]) - 1
+                f = open('razershop.txt' , 'w')
+                f.close()
+                with open("razershop.txt" , 'a') as newline:
+                    for item in all_products:
+                        newline.write("{0} , {1}, {2} , {3}\n".format(item[0] , item[1] , item[2] , item[3]))
+                print("Item Had Been Deleted.")   
+                sys.exit(0)
+            else:
+                sys.exit(0)
         else:
             print("Incorrect username and password")
-    else:
+ 
+    elif choice == 5:
         print("GoodBye!!")
+        break
+
+    else:
+        print("Sorry No This Option!!!")
         break
