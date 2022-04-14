@@ -96,7 +96,7 @@ def decrement_item(item_id, quantity):
 
     with open('razershop.txt' , 'w') as f:        
         for line in new_all_products:
-            f.write("%s,%s, %s   ,   %s\n" %(line[0].strip() , line[1].strip() , line[2].strip() , line[3].strip()))
+            f.write("%s,%s, %s   ,   %s\n" %(line[0].strip() , line[1].strip() , line[2].strip() , str(line[3]).strip()))
 
 
 
@@ -224,7 +224,7 @@ while(True):
                 f.close()
                 with open("razershop.txt" , 'a') as newline:#rewrite the new content into the file
                     for item in all_products:
-                        newline.write("{0},{1}, {2}   ,   {3}\n".format(item[0].strip() , item[1].strip() , item[2].strip() , item[3].strip()))
+                        newline.write("{0},{1}, {2}   ,   {3}\n".format(str(item[0]).strip() , item[1].strip() , item[2].strip() , item[3].strip()))
                 print("Item Had Been Deleted.")   
                 sys.exit(0)
 
@@ -243,3 +243,4 @@ while(True):
     else:
         print("Sorry No This Option!!!")
         break
+
